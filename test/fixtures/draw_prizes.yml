@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  draw: one
+  numbers: 1
+  value: 1.5
+
+two:
+  draw: two
+  numbers: 1
+  value: 1.5

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  lottery: one
+  number: 1
+  date: 2017-05-19
+  numbers: MyText
+
+two:
+  lottery: two
+  number: 1
+  date: 2017-05-19
+  numbers: MyText
