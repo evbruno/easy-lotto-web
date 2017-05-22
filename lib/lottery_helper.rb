@@ -3,7 +3,7 @@ module LotteryHelper
   def self.import_lottery(lottery, path, amount_of_pages)
     puts "> Importing #{lottery.name}, until curr_page #{amount_of_pages}"
 
-    curr_page = 0
+    curr_page = 1
     url = "https://easy-lotto-api.herokuapp.com/api/#{path}/"
 
     Draw.transaction do
@@ -14,13 +14,13 @@ module LotteryHelper
 
         LotteryHelper::create_draws(lottery, json_arr)
 
-        curr_page += 1
-
         puts "> Importing page #{curr_page}, until page #{amount_of_pages}"
+
+        curr_page += 1
 
         sleep(2)
 
-        break if curr_page >= amount_of_pages
+        break if curr_page > amount_of_pages
 
       end # loop
 
@@ -32,10 +32,9 @@ module LotteryHelper
   def self.create_draws(lottery, json_arr)
     json_arr.each do |json|
       if draw_exists?(lottery, json['draw']) then
-        ptus "Draw #{json['draw']} exists... skiping !"
+        puts "Draw #{json['draw']} exists... skipping !"
       else
-        draw = create_draw(lottery, json)
-        create_draw_prize(draw, json)
+        create_draw(lottery, json)
       end
     end
   end
@@ -45,20 +44,16 @@ module LotteryHelper
   end
 
   def self.create_draw(lottery, json)
-    puts "> Creating Draw for #{lottery.inspect}"
+    puts "> Creating Draw #{json['draw']} for #{lottery.name}"
+
+    raw_prizes = json['prizes']
+    prizes = Hash[raw_prizes.map { |k, v| [k, parse_money(v)] }]
+
     Draw.create(lottery: lottery,
                 number: json['draw'],
                 date: parse_date(json['drawDate']),
-                numbers: json['numbers'])
-  end
-
-  def self.create_draw_prize(draw, json)
-    puts "> Creating DrawPrizes for #{draw.lottery.name} > #{draw.number}"
-    json['prizes'].each do | arr |
-      DrawPrize.create(draw: draw,
-                       numbers: arr[0],
-                       value: parse_money(arr[1]))
-    end
+                numbers: json['numbers'],
+                prizes: prizes)
   end
 
   def self.parse_date(input)

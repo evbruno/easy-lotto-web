@@ -6,22 +6,33 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-DrawPrize.delete_all
 Draw.delete_all
 Lottery.delete_all
 
 lotofacil = Lottery.create!(name: 'Lotofacil')
-Lottery.create!(name: 'Mega Sena')
 
-d0 = Draw.create!(lottery: lotofacil,
+Draw.create!(lottery: lotofacil,
               number: 1512,
               date: Time.mktime(2017, 5, 17),
-              numbers: [2, 3, 4, 6, 10, 11, 12, 13, 15, 16, 17, 19, 21, 22, 24])
+              numbers: [2, 3, 4, 6, 10, 11, 12, 13, 15, 16, 17, 19, 21, 22, 24],
+              prizes: {
+                15 => 2007937.94,
+                14 => 1382.16,
+                13 => 20,
+                12 => 8,
+                11 => 4
+                }
+              )
 
-[[15, 2007937.94], [14, 1382.16], [13, 20], [12, 8], [11, 4]].each do | arr |
+mega = Lottery.create!(name: 'Mega Sena')
 
-  DrawPrize.create!(draw: d0,
-                   numbers: arr[0],
-                   value: arr[1])
-
-end
+Draw.create!(lottery: mega,
+              number: 1932,
+              date: Time.mktime(2017, 5, 20),
+              numbers: [10, 16, 21, 29, 44, 55],
+              prizes: {
+                6 => 0,
+                5 => 38379.16,
+                4 => 724.45
+                }
+              )

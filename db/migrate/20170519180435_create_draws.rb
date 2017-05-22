@@ -5,6 +5,7 @@ class CreateDraws < ActiveRecord::Migration[5.1]
       t.integer :number
       t.date :date
       t.text :numbers
+      t.text :prizes
 
       t.timestamps
     end

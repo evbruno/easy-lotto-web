@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20170519181059) do
     t.integer "number"
     t.date "date"
     t.text "numbers"
+    t.text "prizes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["lottery_id"], name: "index_draws_on_lottery_id"
