@@ -5,7 +5,7 @@ class LotteryHelper
   base_uri 'https://easy-lotto-api.herokuapp.com/api'
 
   def self.import_lottery(lottery, path, amount_of_pages = 1)
-    puts "> Importing #{lottery.name}, until curr_page #{amount_of_pages}"
+    log "> Importing #{lottery.name}, until curr_page #{amount_of_pages}"
 
     curr_page = 1
     helper = self.new
@@ -17,7 +17,7 @@ class LotteryHelper
 
         helper.create_draws(lottery, json_arr)
 
-        puts "> Importing page #{curr_page}, until page #{amount_of_pages}"
+        log "> Importing page #{curr_page}, until page #{amount_of_pages}"
 
         curr_page += 1
 
@@ -47,7 +47,7 @@ class LotteryHelper
   def create_draws(lottery, json_arr)
     json_arr.each do |json|
       if draw_exists?(lottery, json['draw']) then
-        puts "Draw #{json['draw']} exists... skipping !"
+        self.class.log "Draw #{json['draw']} exists... skipping !"
       else
         create_draw(lottery, json)
       end
@@ -61,7 +61,7 @@ class LotteryHelper
   end
 
   def create_draw(lottery, json)
-    puts "> Creating Draw #{json['draw']} for #{lottery.name}"
+    self.class.log "> Creating Draw #{json['draw']} for #{lottery.name}"
 
     raw_prizes = json['prizes']
     prizes = Hash[raw_prizes.map { |k, v| [k, parse_money(v)] }]
@@ -79,6 +79,13 @@ class LotteryHelper
 
   def parse_money(input)
     input.gsub('.', '').gsub(',', '.').to_f
+  end
+
+  def self.log(msg)
+    if ! Rails.env.test?
+      puts msg
+      Rails.logger.info msg
+    end
   end
 
 end

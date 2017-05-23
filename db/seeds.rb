@@ -36,3 +36,7 @@ Draw.create!(lottery: mega,
                 4 => 724.45
                 }
               )
+
+group = Group.create!(name: 'Default Group')
+bob = User.create!(name: 'Bob')
+ug = UserGroup.create!(user: bob, group: group)

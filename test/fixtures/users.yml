@@ -1,0 +1,16 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+dude:
+  name: Dude
+  email: dude@domain.com
+  avatar: MyString
+
+bob:
+  name: Robert
+  email: bob@domain.com
+  avatar: MyString
+
+james:
+  name: James
+  email: james@domain.com
+  avatar: MyString
