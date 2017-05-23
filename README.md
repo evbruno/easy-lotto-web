@@ -1,24 +1,26 @@
-# README
+# Easy Lotto (web)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+**Stack:**
 
-Things you may want to cover:
+* Ruby 2.4.1
+* Rails 5.1.1
 
-* Ruby version
 
-* System dependencies
+### Rails commands
 
-* Configuration
+**Model creation**
 
-* Database creation
+```
+$ rails g model Lottery name:string
+$ rails g model Draw lottery:references:index number:integer date:date numbers:text prizes:text
+```
 
-* Database initialization
+**Misc**
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```
+$ rails db:seed
+$ rails 'importer:lotofacil[10]'
+$ RAILS_ENV=production rails db:migrate
+$ RAILS_ENV=production rails db:seed
+$ RAILS_ENV=production rails 'importer:lotofacil[5]'
+```
