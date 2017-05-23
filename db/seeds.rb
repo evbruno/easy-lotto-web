@@ -9,8 +9,12 @@
 Draw.delete_all
 Lottery.delete_all
 
-lotofacil = Lottery.create!(name: 'Lotofacil')
+UserBalanceEntry.delete_all
+UserGroup.delete_all
+Group.delete_all
+User.delete_all
 
+lotofacil = Lottery.create!(name: 'Lotofacil')
 Draw.create!(lottery: lotofacil,
               number: 1512,
               date: Time.mktime(2017, 5, 17),
@@ -25,7 +29,6 @@ Draw.create!(lottery: lotofacil,
               )
 
 mega = Lottery.create!(name: 'Mega Sena')
-
 Draw.create!(lottery: mega,
               number: 1932,
               date: Time.mktime(2017, 5, 20),
@@ -40,3 +43,4 @@ Draw.create!(lottery: mega,
 group = Group.create!(name: 'Default Group')
 bob = User.create!(name: 'Bob')
 ug = UserGroup.create!(user: bob, group: group)
+UserBalanceEntry.create!(user_group: ug, value: 10, approved: true)

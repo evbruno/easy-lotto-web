@@ -1,5 +1,5 @@
 class UserBalanceEntry < ApplicationRecord
-  belongs_to :user_group
+  belongs_to :user_group, dependent: :destroy
   after_create :update_balance_on_creation
   after_update :update_balance_on_update
 
