@@ -1,5 +1,3 @@
-require 'lottery_helper'
-
 namespace :importer do
 
   desc "Import Lotofacil draws"
@@ -7,7 +5,7 @@ namespace :importer do
     amount_of_pages = (args[:amount_of_pages] || 1).to_i
     lottery = Lottery.where(name: 'Lotofacil').first
     LotteryHelper::import_lottery(lottery, 'lotofacil', amount_of_pages)
-  end #task
+  end
 
   desc "Import MegaSena draws"
   task :megasena, [:amount_of_pages] => :environment do |task, args|

@@ -1,24 +1,29 @@
-module LotteryHelper
+class LotteryHelper
+  include HTTParty
+  format :json
 
-  def self.import_lottery(lottery, path, amount_of_pages)
+  base_uri 'https://easy-lotto-api.herokuapp.com/api'
+
+  def self.import_lottery(lottery, path, amount_of_pages = 1)
     puts "> Importing #{lottery.name}, until curr_page #{amount_of_pages}"
 
     curr_page = 1
-    url = "https://easy-lotto-api.herokuapp.com/api/#{path}/"
+    helper = self.new
 
     Draw.transaction do
 
       loop do
-        response = HTTParty.get(url + curr_page.to_s)
-        json_arr = response.parsed_response
+        json_arr = helper.draws(path, curr_page)
 
-        LotteryHelper::create_draws(lottery, json_arr)
+        helper.create_draws(lottery, json_arr)
 
         puts "> Importing page #{curr_page}, until page #{amount_of_pages}"
 
         curr_page += 1
 
-        sleep(2)
+        if ! Rails.env.test?
+          sleep(2)
+        end
 
         break if curr_page > amount_of_pages
 
@@ -27,9 +32,19 @@ module LotteryHelper
     end # transaction
   end
 
-  private
+  def lotofacil(page = 1)
+    draws('lotofacil', page)
+  end
 
-  def self.create_draws(lottery, json_arr)
+  def megasena(page = 1)
+    draws('megasena', page)
+  end
+
+  def draws(game, page = 1)
+    self.class.get("/#{game}/#{page}")
+  end
+
+  def create_draws(lottery, json_arr)
     json_arr.each do |json|
       if draw_exists?(lottery, json['draw']) then
         puts "Draw #{json['draw']} exists... skipping !"
@@ -39,11 +54,13 @@ module LotteryHelper
     end
   end
 
-  def self.draw_exists?(lottery, draw_number)
-  	Draw.exists?( lottery: lottery, number: draw_number )
+  private
+
+  def draw_exists?(lottery, draw_number)
+    Draw.exists?( lottery: lottery, number: draw_number )
   end
 
-  def self.create_draw(lottery, json)
+  def create_draw(lottery, json)
     puts "> Creating Draw #{json['draw']} for #{lottery.name}"
 
     raw_prizes = json['prizes']
@@ -56,11 +73,11 @@ module LotteryHelper
                 prizes: prizes)
   end
 
-  def self.parse_date(input)
+  def parse_date(input)
     Date.strptime(input, '%d/%m/%Y')
   end
 
-  def self.parse_money(input)
+  def parse_money(input)
     input.gsub('.', '').gsub(',', '.').to_f
   end
 
