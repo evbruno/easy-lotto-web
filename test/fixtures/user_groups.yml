@@ -4,8 +4,10 @@ dude:
   user: dude
   group: one
   admin: true
+  balance: 0
 
 bob:
   user: bob
   group: one
   admin: false
+  balance: 10
