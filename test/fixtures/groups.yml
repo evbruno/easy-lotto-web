@@ -1,7 +1,4 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: Group One
-
-two:
-  name: MyString
+default_group:
+  name: Default Group

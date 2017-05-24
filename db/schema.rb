@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170523041428) do
+ActiveRecord::Schema.define(version: 20170523204245) do
+
+  create_table "betting_pools", force: :cascade do |t|
+    t.date "date"
+    t.integer "group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_betting_pools_on_group_id"
+  end
 
   create_table "draws", force: :cascade do |t|
     t.integer "lottery_id"
@@ -33,6 +41,19 @@ ActiveRecord::Schema.define(version: 20170523041428) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "lottery_bets", force: :cascade do |t|
+    t.integer "betting_pool_id"
+    t.integer "sequence"
+    t.text "numbers"
+    t.integer "lottery_id"
+    t.integer "first_draw"
+    t.integer "last_draw"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["betting_pool_id"], name: "index_lottery_bets_on_betting_pool_id"
+    t.index ["lottery_id"], name: "index_lottery_bets_on_lottery_id"
   end
 
   create_table "user_balance_entries", force: :cascade do |t|

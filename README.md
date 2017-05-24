@@ -13,10 +13,14 @@
 ```
 $ rails g model Lottery name:string
 $ rails g model Draw lottery:references:index number:integer date:date numbers:text prizes:text
+
 $ rails g model User name:string email:string:index avatar:string
 $ rails g model Group name:string
 $ rails g model UserGroup user:references:index group:references:index admin:boolean balance:float
 $ rails g model UserBalanceEntry user_group:references:index value:float date:date approved:boolean
+
+$ rails g model BettingPool date:date group:references:index
+$ rails g model LotteryBet betting_pool:references:index sequence:integer numbers:text lottery:references:index first_draw:integer last_draw:integer
 ```
 
 **Misc**

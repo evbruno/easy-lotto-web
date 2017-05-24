@@ -3,7 +3,7 @@ require 'test_helper'
 class UserGroupTest < ActiveSupport::TestCase
 
   test "new user_balance_entry updates user_group balance only when approved" do
-    one = groups(:one)
+    one = groups(:default_group)
     james = users(:james)
 
     assert_not UserGroup.exists?(user: james, group: one)
@@ -27,7 +27,7 @@ class UserGroupTest < ActiveSupport::TestCase
   end
 
   test "new user_balance_entry updates user_group balance" do
-    one = groups(:one)
+    one = groups(:default_group)
     james = users(:james)
     ug = UserGroup.create!(user: james, group: one)
 
@@ -39,7 +39,7 @@ class UserGroupTest < ActiveSupport::TestCase
   end
 
   test "new user_balance_entry updates user_group balance only when approved after value changed" do
-    one = groups(:one)
+    one = groups(:default_group)
     james = users(:james)
 
     assert_not UserGroup.exists?(user: james, group: one)
@@ -70,7 +70,7 @@ class UserGroupTest < ActiveSupport::TestCase
   end
 
   test "user_balance_entry shall not change after approved" do
-    one = groups(:one)
+    one = groups(:default_group)
     james = users(:james)
     ug = UserGroup.create!(user: james, group: one)
 

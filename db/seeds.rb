@@ -6,13 +6,18 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Draw.delete_all
-Lottery.delete_all
+Lottery.transaction do
+  LotteryBet.delete_all
+  BettingPool.delete_all
 
-UserBalanceEntry.delete_all
-UserGroup.delete_all
-Group.delete_all
-User.delete_all
+  UserBalanceEntry.delete_all
+  UserGroup.delete_all
+  User.delete_all
+  Group.delete_all
+
+  Draw.delete_all
+  Lottery.delete_all
+end
 
 lotofacil = Lottery.create!(name: 'Lotofacil')
 Draw.create!(lottery: lotofacil,
@@ -44,3 +49,21 @@ group = Group.create!(name: 'Default Group')
 bob = User.create!(name: 'Bob')
 ug = UserGroup.create!(user: bob, group: group)
 UserBalanceEntry.create!(user_group: ug, value: 10, approved: true)
+
+james = User.create!(name: 'James')
+UserGroup.create!(user: james, group: group)
+
+pool = BettingPool.create!(date: Time.mktime(2017, 5, 23), group: group)
+LotteryBet.create!(betting_pool: pool, sequence: 1, first_draw: 1933, last_draw: 1933, lottery: mega, numbers: [10, 16, 21, 29, 44, 54])
+LotteryBet.create!(betting_pool: pool, sequence: 2, first_draw: 1933, last_draw: 1933, lottery: mega, numbers: [11, 17, 22, 30, 45, 56])
+
+Draw.create!(lottery: mega,
+              number: 1933,
+              date: Time.mktime(2017, 5, 27),
+              numbers: [10, 16, 21, 29, 44, 55],
+              prizes: {
+                6 => 0,
+                5 => 38379.16,
+                4 => 724.45
+                }
+              )

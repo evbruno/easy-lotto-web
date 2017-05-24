@@ -2,12 +2,12 @@
 
 dude:
   user: dude
-  group: one
+  group: default_group
   admin: true
   balance: 0
 
 bob:
   user: bob
-  group: one
+  group: default_group
   admin: false
   balance: 10

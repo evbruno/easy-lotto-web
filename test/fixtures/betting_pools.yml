@@ -1,7 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-lotofacil:
-  name: Lotofácil
+mega_pool:
+  date: 2017-05-17
+  group: default_group
 
-megasena:
-  name: Mega Sena

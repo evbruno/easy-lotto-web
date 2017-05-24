@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+mega_1:
+  betting_pool: default_pool
+  sequence: 1
+  numbers: [10, 16, 21, 29, 44, 54]
+  lottery: megasena
+  first_draw: 1930
+  last_draw: 1940
+
+mega_2:
+  betting_pool: default_pool
+  sequence: 2
+  numbers: [11, 17, 22, 30, 45, 56]
+  lottery: megasena
+  first_draw: 1930
+  last_draw: 1940
