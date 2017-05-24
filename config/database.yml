@@ -9,9 +9,19 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
+# development:
+#  <<: *default
+#  database: db/development.sqlite3
+
 development:
- <<: *default
- database: db/development.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  database: easy_lotto_dev
+  username: postgres
+  password: postgres
+  host: localhost
+  port: 5432
 
 # development:
 #   adapter: mysql2

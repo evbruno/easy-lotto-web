@@ -12,16 +12,19 @@
 
 ActiveRecord::Schema.define(version: 20170523204245) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "betting_pools", force: :cascade do |t|
     t.date "date"
-    t.integer "group_id"
+    t.bigint "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_betting_pools_on_group_id"
   end
 
   create_table "draws", force: :cascade do |t|
-    t.integer "lottery_id"
+    t.bigint "lottery_id"
     t.integer "number"
     t.date "date"
     t.text "numbers"
@@ -44,10 +47,10 @@ ActiveRecord::Schema.define(version: 20170523204245) do
   end
 
   create_table "lottery_bets", force: :cascade do |t|
-    t.integer "betting_pool_id"
+    t.bigint "betting_pool_id"
     t.integer "sequence"
     t.text "numbers"
-    t.integer "lottery_id"
+    t.bigint "lottery_id"
     t.integer "first_draw"
     t.integer "last_draw"
     t.datetime "created_at", null: false
@@ -57,7 +60,7 @@ ActiveRecord::Schema.define(version: 20170523204245) do
   end
 
   create_table "user_balance_entries", force: :cascade do |t|
-    t.integer "user_group_id"
+    t.bigint "user_group_id"
     t.float "value"
     t.date "date"
     t.boolean "approved"
@@ -67,8 +70,8 @@ ActiveRecord::Schema.define(version: 20170523204245) do
   end
 
   create_table "user_groups", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "group_id"
+    t.bigint "user_id"
+    t.bigint "group_id"
     t.boolean "admin", default: false
     t.float "balance", default: 0.0
     t.datetime "created_at", null: false
@@ -86,4 +89,11 @@ ActiveRecord::Schema.define(version: 20170523204245) do
     t.index ["email"], name: "index_users_on_email"
   end
 
+  add_foreign_key "betting_pools", "groups"
+  add_foreign_key "draws", "lotteries"
+  add_foreign_key "lottery_bets", "betting_pools"
+  add_foreign_key "lottery_bets", "lotteries"
+  add_foreign_key "user_balance_entries", "user_groups"
+  add_foreign_key "user_groups", "groups"
+  add_foreign_key "user_groups", "users"
 end

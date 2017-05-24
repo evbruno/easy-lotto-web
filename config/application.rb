@@ -14,5 +14,9 @@ module EasyLottoWeb
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+
+    # docker's ip
+    #config.web_console.whitelisted_ips = '172.17.0.1'
+
   end
 end
