@@ -7,6 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 Lottery.transaction do
+  PoolParticipation.delete_all
   LotteryBet.delete_all
   BettingPool.delete_all
 
@@ -54,6 +55,9 @@ james = User.create!(name: 'James')
 UserGroup.create!(user: james, group: group)
 
 pool = BettingPool.create!(date: Time.mktime(2017, 5, 23), group: group)
+# PoolParticipation.create!(pool: pool, user_group: ug)
+pool.join(ug)
+
 LotteryBet.create!(betting_pool: pool, sequence: 1, first_draw: 1933, last_draw: 1933, lottery: mega, numbers: [10, 16, 21, 29, 44, 54])
 LotteryBet.create!(betting_pool: pool, sequence: 2, first_draw: 1933, last_draw: 1933, lottery: mega, numbers: [11, 17, 22, 30, 45, 56])
 
@@ -67,3 +71,5 @@ Draw.create!(lottery: mega,
                 4 => 724.45
                 }
               )
+
+

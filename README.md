@@ -21,6 +21,9 @@ $ rails g model UserBalanceEntry user_group:references:index value:float date:da
 
 $ rails g model BettingPool date:date group:references:index
 $ rails g model LotteryBet betting_pool:references:index sequence:integer numbers:text lottery:references:index first_draw:integer last_draw:integer
+$ rails g model PoolParticipation betting_pool:references:index user_group:references:index
+$ rails g migration add_values_to_betting_pool value:float value_per_participant:float
+$ rails g migration add_description_to_user_balance_entries description:string
 ```
 
 **Misc**
@@ -31,6 +34,7 @@ $ rails 'importer:lotofacil[10]'
 $ RAILS_ENV=production rails db:migrate
 $ RAILS_ENV=production rails db:seed
 $ RAILS_ENV=production rails 'importer:lotofacil[5]'
+$ railroady -M --show-belongs_to --all-columns -j -t | dot -Tsvg > doc/models.svg
 ```
 
 ## Other commands

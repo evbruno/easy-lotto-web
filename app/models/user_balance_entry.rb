@@ -7,7 +7,7 @@ class UserBalanceEntry < ApplicationRecord
 
   def update_balance_on_creation
     if self.approved?
-      self.user_group.balance += self.value
+      self.user_group.balance += (self.value || 0)
       self.user_group.save!
     end
   end

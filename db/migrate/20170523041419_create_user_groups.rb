@@ -4,7 +4,7 @@ class CreateUserGroups < ActiveRecord::Migration[5.1]
       t.references :user, foreign_key: true
       t.references :group, foreign_key: true
       t.boolean :admin, default: false
-      t.float :balance, default: 0
+      t.float :balance, default: 0, null: false
 
       t.timestamps
     end

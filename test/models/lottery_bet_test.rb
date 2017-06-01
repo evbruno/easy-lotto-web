@@ -4,7 +4,7 @@ class LotteryBetTest < ActiveSupport::TestCase
 
   test "bet can calculate its hits" do
     draw1 = draws(:megasena_1932)
-    # fixture ok ?
+
     assert_equal 38379.16, draw1.prizes[5]
 
     hits1 = lottery_bets(:mega_1).hits

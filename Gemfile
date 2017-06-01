@@ -41,6 +41,7 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'vcr'
   gem 'webmock'
+  gem 'railroady'
 end
 
 group :development do

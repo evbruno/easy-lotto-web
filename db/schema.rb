@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170523204245) do
+ActiveRecord::Schema.define(version: 20170531183830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 20170523204245) do
     t.bigint "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "value", default: 0.0, null: false
+    t.float "value_per_participant", default: 0.0, null: false
     t.index ["group_id"], name: "index_betting_pools_on_group_id"
   end
 
@@ -59,13 +61,23 @@ ActiveRecord::Schema.define(version: 20170523204245) do
     t.index ["lottery_id"], name: "index_lottery_bets_on_lottery_id"
   end
 
+  create_table "pool_participations", force: :cascade do |t|
+    t.bigint "betting_pool_id"
+    t.bigint "user_group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["betting_pool_id"], name: "index_pool_participations_on_betting_pool_id"
+    t.index ["user_group_id"], name: "index_pool_participations_on_user_group_id"
+  end
+
   create_table "user_balance_entries", force: :cascade do |t|
     t.bigint "user_group_id"
-    t.float "value"
+    t.float "value", default: 0.0, null: false
     t.date "date"
     t.boolean "approved"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "description"
     t.index ["user_group_id"], name: "index_user_balance_entries_on_user_group_id"
   end
 
@@ -73,7 +85,7 @@ ActiveRecord::Schema.define(version: 20170523204245) do
     t.bigint "user_id"
     t.bigint "group_id"
     t.boolean "admin", default: false
-    t.float "balance", default: 0.0
+    t.float "balance", default: 0.0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_user_groups_on_group_id"
@@ -93,6 +105,8 @@ ActiveRecord::Schema.define(version: 20170523204245) do
   add_foreign_key "draws", "lotteries"
   add_foreign_key "lottery_bets", "betting_pools"
   add_foreign_key "lottery_bets", "lotteries"
+  add_foreign_key "pool_participations", "betting_pools"
+  add_foreign_key "pool_participations", "user_groups"
   add_foreign_key "user_balance_entries", "user_groups"
   add_foreign_key "user_groups", "groups"
   add_foreign_key "user_groups", "users"
