@@ -1,4 +1,5 @@
-class LotteryHelper
+# FIXME !!!!
+module LotteryHelper
   include HTTParty
   format :json
 
