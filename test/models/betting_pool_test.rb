@@ -76,6 +76,24 @@ class BettingPoolTest < ActiveSupport::TestCase
     assert_equal 10, bob.balance
     assert_equal 0,  dude.balance
     assert_equal 0,  james.balance
+
+    bob_entries = bob.user_balance_entries
+    assert_equal  9, bob_entries.count
+    assert_equal 15, bob_entries.last.value
+    assert_equal "Value update: myself left the pool (auto)",  bob_entries.last.description
+    assert_equal (-15), bob_entries[7].value
+    assert_equal "Value update: user_left (auto)(recalc)",  bob_entries[7].description
+
+    james_entries = james.user_balance_entries
+    assert_equal  6, james_entries.count
+    assert_equal 30, james_entries.last.value
+    assert_equal "Value update: myself left the pool (auto)",  james_entries.last.description
+
+    dude_entries = dude.user_balance_entries
+    assert_equal  4, dude_entries.count
+    assert_equal 10, dude_entries.last.value
+    assert_equal "Value update: myself left the pool (auto)",  dude_entries.last.description
   end
+
 
 end

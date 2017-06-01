@@ -37,21 +37,18 @@ class BettingPool < ApplicationRecord
   end
 
   def recalculate_values(action, user_delta = nil)
-    old_value = self.attribute_before_last_save('value')
-    new_value = self.value
-
     count = self.participants.size
 
     old_value_per_participant = self.value_per_participant
-    self.value_per_participant = new_value / count
+    self.value_per_participant =  self.value / count
 
-    logger.debug "Pool values > old: #{old_value} new: #{new_value}"
+    logger.debug "Pool value : #{self.value}"
     logger.debug "Pool values p/ participant > old: #{old_value_per_participant} current: #{self.value_per_participant} count: #{count}"
 
     UserBalanceEntry.transaction do
 
       if !user_delta.nil? and action == :user_left
-        UserBalanceEntry.create!(user_group: user_delta.user_group, value: old_value_per_participant, approved: true, description: "Value update: #{action}")
+        create_entry(user_delta, old_value_per_participant, "Value update: myself left the pool (auto)")
       end
 
       self.participants.each do |participant|
@@ -59,21 +56,27 @@ class BettingPool < ApplicationRecord
 
         if old_value_per_participant != 0
           if user_delta != participant or action == :user_left
-            UserBalanceEntry.create!(user_group: participant.user_group, value: old_value_per_participant, approved: true, description: "Value update: #{action}")
+            create_entry participant, old_value_per_participant, "Value update: #{action} (auto)(reversal)"
           end
         end
 
         if self.value_per_participant != 0
           if user_delta != participant or action == :user_joined
-            UserBalanceEntry.create!(user_group: participant.user_group, value: - self.value_per_participant, approved: true, description: "Value update: #{action}")
+            create_entry participant, - self.value_per_participant, "Value update: #{action} (auto)(recalc)"
           end
         end
 
       end
 
-    end
+    end # tx
 
   end
 
-end
+  def create_entry(participant, value, msg)
+    UserBalanceEntry.create!(user_group: participant.user_group,
+                             value: value,
+                             approved: true,
+                             description: msg)
+  end
 
+end
