@@ -1,4 +1,3 @@
-# FIXME !!!!
 module LotteryHelper
   include HTTParty
   format :json
@@ -9,14 +8,13 @@ module LotteryHelper
     log "> Importing #{lottery.name}, until curr_page #{amount_of_pages}"
 
     curr_page = 1
-    helper = self.new
 
     Draw.transaction do
 
       loop do
-        json_arr = helper.draws(path, curr_page)
+        json_arr = self.draws(path, curr_page)
 
-        helper.create_draws(lottery, json_arr)
+        self.create_draws(lottery, json_arr)
 
         log "> Importing page #{curr_page}, until page #{amount_of_pages}"
 
@@ -33,22 +31,22 @@ module LotteryHelper
     end # transaction
   end
 
-  def lotofacil(page = 1)
+  def self.lotofacil(page = 1)
     draws('lotofacil', page)
   end
 
-  def megasena(page = 1)
+  def self.megasena(page = 1)
     draws('megasena', page)
   end
 
-  def draws(game, page = 1)
-    self.class.get("/#{game}/#{page}")
+  def self.draws(game, page = 1)
+    self.get("/#{game}/#{page}")
   end
 
-  def create_draws(lottery, json_arr)
+  def self.create_draws(lottery, json_arr)
     json_arr.each do |json|
       if draw_exists?(lottery, json['draw']) then
-        self.class.log "Draw #{json['draw']} exists... skipping !"
+        log "Draw #{json['draw']} exists... skipping !"
       else
         create_draw(lottery, json)
       end
@@ -57,12 +55,12 @@ module LotteryHelper
 
   private
 
-  def draw_exists?(lottery, draw_number)
+  def self.draw_exists?(lottery, draw_number)
     Draw.exists?( lottery: lottery, number: draw_number )
   end
 
-  def create_draw(lottery, json)
-    self.class.log "> Creating Draw #{json['draw']} for #{lottery.name}"
+  def self.create_draw(lottery, json)
+    log "> Creating Draw #{json['draw']} for #{lottery.name}"
 
     raw_prizes = json['prizes']
     prizes = Hash[raw_prizes.map { |k, v| [k, parse_money(v)] }]
@@ -74,11 +72,11 @@ module LotteryHelper
                 prizes: prizes)
   end
 
-  def parse_date(input)
+  def self.parse_date(input)
     Date.strptime(input, '%d/%m/%Y')
   end
 
-  def parse_money(input)
+  def self.parse_money(input)
     input.gsub('.', '').gsub(',', '.').to_f
   end
 

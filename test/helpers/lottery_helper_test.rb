@@ -9,9 +9,8 @@ class LotteryHelperTest < ActiveSupport::TestCase
 
       assert_not Draw.exists?(number: 1513, lottery: lotofacil)
 
-      subject = LotteryHelper.new
-      json_arr = subject.lotofacil(page = 1)
-      subject.create_draws(lotofacil, json_arr)
+      json_arr = LotteryHelper::lotofacil(page = 1)
+      LotteryHelper::create_draws(lotofacil, json_arr)
 
       assert Draw.exists?(number: 1513, lottery: lotofacil)
       assert Draw.exists?(number: 1512, lottery: lotofacil)
@@ -33,7 +32,7 @@ class LotteryHelperTest < ActiveSupport::TestCase
 
       assert amount_of_draws >= 5
 
-      subject.create_draws(lotofacil, json_arr)
+      LotteryHelper::create_draws(lotofacil, json_arr)
 
       assert_equal amount_of_draws, Draw.all.count
     end
