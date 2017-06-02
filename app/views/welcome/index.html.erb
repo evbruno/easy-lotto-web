@@ -1,0 +1,66 @@
+ <div class="container">
+      <div class="jumbotron">
+        <h1>EasyLotto</h1>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod similique perferendis molestias ea quis officiis praesentium, odio vero dolore nihil eaque earum ipsa laboriosam! Modi incidunt eveniet, ipsum quidem asperiores?</p>
+      </div>
+    </div>
+
+<div class="container">
+
+  <div class="row">
+
+    <!-- col -->
+    <div class="col">
+      <h3>Lotofacil</h3>
+      <p>Últimos sorteios</p>
+      <table class="table table-striped table-hover">
+        <thead class="thead-inverse">
+          <tr>
+            <th>Sorteio</th>
+            <th>Data</th>
+            <th>Números</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @lotofacil_draws.each do |lot| %>
+          <tr>
+            <td><%= lot.number %></td>
+            <td><%= lot.date.strftime('%d/%m/%Y') %></td>
+            <td><%= numbers_to_badges(lot.numbers).html_safe %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+    <!-- /col -->
+
+    <!-- col -->
+    <div class="col">
+      <h3>Mega Sena</h3>
+      <p>Últimos sorteios</p>
+      <table class="table table-striped table-hover">
+        <thead class="thead-inverse">
+          <tr>
+            <th>Sorteio</th>
+            <th>Data</th>
+            <th>Números</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @megasena_draws.each do |lot| %>
+          <tr>
+            <td><%= lot.number %></td>
+            <td><%= lot.date.strftime('%d/%m/%Y') %></td>
+            <td><%= numbers_to_badges(lot.numbers).html_safe %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+    <!-- /col -->
+
+  </div>
+
+</div>
